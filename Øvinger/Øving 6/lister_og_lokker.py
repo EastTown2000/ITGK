@@ -5,7 +5,7 @@ print(number_list)
 
 nummerSum = 0
 for nummer in number_list:
-  if nummer % 3 == 0 and nummer % 10 == 0:
+  if nummer % 3 == 0 or nummer % 10 == 0:
     nummerSum += nummer
 print(nummerSum)
 

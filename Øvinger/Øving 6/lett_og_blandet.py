@@ -1,8 +1,5 @@
 def is_six_at_edge(liste):
-  if liste[0] == 6 or liste[-1] == 6:
-    return True
-  else:
-    return False
+  return liste[0] == 6 or liste[-1] == 6
 
 print(is_six_at_edge([1,2,3,4,5,6]))
 print(is_six_at_edge([1,2,3,4,5,6,7]))

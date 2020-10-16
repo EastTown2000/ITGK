@@ -3,7 +3,7 @@ print(my_first_list)
 
 print(len(my_first_list))
 
-my_first_list[4] = 'pluss'
+my_first_list[-2] = 'pluss'
 print(my_first_list)
 
 my_second_list = my_first_list[-3:]
