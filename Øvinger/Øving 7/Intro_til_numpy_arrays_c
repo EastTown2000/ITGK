@@ -1,0 +1,6 @@
+Funksjonen EulerCromer( tmax, x0, y0, v0, u0, m, tau), tar inn omløpstid i år, start posisjon og startfart, 
+massen til jorda (trengs ikke) og steglende. N er totale steg. Deretter lages arrayer til variablene med 
+lenge N. Så fastsettes første verdi for variablene og hvrdan man finner neste.
+
+Variablene blir satt.
+Etterpå blir alt plottet, og solen blir også lagt til i plotet
