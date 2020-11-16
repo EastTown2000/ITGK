@@ -7,11 +7,14 @@ class Piece:
     
     def is_opposite_piece_at(self, x, y, board_instance) -> bool:
         """Returns 'if it is an opposing piece at x, y or not'"""
-        piece = board_instance.get_piece_at(x, y)
-        if piece != None:
-            return piece.is_white != self.is_white
+        if x<=8 and x>0 and y<=8 and y>0:
+            piece = board_instance.get_piece_at(x, y)
+            if piece != None:
+                return piece.is_white != self.is_white
+            else:
+                return False
         else:
-            return False
+                return False
     
     def __str__(self):
         """Returns string wth class name"""
@@ -378,10 +381,6 @@ class Board:
         piece = self.get_piece_at(*start)
         opposing_piece = self.get_piece_at(*end)
         
-        if piece.is_white == opposing_piece.is_white:
-            raise Exception #You are trying to take your own piece
-        #TODO Husk try exept for function
-        
         if opposing_piece != None:
             opposing_piece.is_alive = False
             opposing_piece.x = None
@@ -422,13 +421,14 @@ class Board:
         #     legal_moves = [self.legal_moves(piece) for piece in pieces]
         #     return legal_moves == []
     
-    def is_in_check(self, player_to_check_is_white):
+    def is_in_check(self, player_is_white):
         """Checks if any of the opposite piece can take the king"""
-        pieces = self.get_piece_where(lambda piece: piece != None and piece.is_white != player_to_check_is_white)
-        king = self.get_piece_where(lambda piece: piece != None and piece.is_white == player_to_check_is_white and str(piece) == 'King')[0]
+        pieces = self.get_piece_where(lambda piece: piece != None and piece.is_white != player_is_white)
+        king = self.get_piece_where(lambda piece: piece != None and piece.is_white == player_is_white and str(piece) == 'King')[0]
         opposite_possible_positions = [piece.possible_moves(self) for piece in pieces]
+        king_position = (king.x, king.y)
         # Would use self.legal_moves(piece) instead of piece.possible_moves(self) if it was ready
-        return (king.x, king.y) in opposite_possible_positions
+        return king_position in opposite_possible_positions
     
     # stalemate and checkmate
         # def stale_mate(self, player_to_check_is_white):
@@ -456,14 +456,18 @@ class Game:
         else:
             print('Black to move')
         
-        board_instance.draw()
-        
-        # if board_instance.is_in_check(player_is_white):
-        #     print('YOU ARE IN CHECK')
-        print('To give up, or admit loss write "L", to ask for remis write "R"')
+        if board_instance.is_in_check(player_is_white):
+            is_in_check = True
+        else:
+            is_in_check = False
         
         while True:
-            start = input('Give x coordinate of piece you want to move: ')
+            board_instance.draw()
+            print('To give up, or admit loss write "L", to ask for remis write "R"')
+            if is_in_check:
+                print('YOU ARE IN CHECK')
+            
+            start = input('Give x-coordinate of piece you want to move: ')
             if start == 'L':
                 self.over(self.players_color(player_is_white))
                 return ''
@@ -473,20 +477,39 @@ class Game:
             
             try:
                 x = int(start)
-                y = int(input('Give y coordinate of piece you want to move: '))
+                y = int(input('Give y-coordinate of piece you want to move: '))
                 piece = board_instance.get_piece_at(x, y)
             except Exception:
                 print('That is not a correct input, try again')
             
-            if piece.is_white != player_is_white:
-                print('That is not your piece, try again')
-                continue
-            elif piece == None:
+            if piece == None:
                 print('That is not a piece, try again')
                 continue
+            elif piece.is_white != player_is_white:
+                print('That is not your piece, try again')
+                continue
+            
+            position = (x, y)
             
             possible_moves = piece.possible_moves(board_instance)
+            
+            if possible_moves == []:
+                print('This piece has no moves, pick another piece')
             print('Thiese are the moves the piece you have chosen can make', possible_moves)
+            
+            try:
+                x_new = int(input('Give x-cordinate you wan to move to: '))
+                y_new = int(input('Give y-cordinate you wan to move to: '))
+            except Exception:
+                print('That is not a correct input, try again')
+            
+            new_position = (x_new, y_new)
+            
+            if new_position in possible_moves:
+                board_instance.move(position, new_position)
+                break
+            else:
+                print('That is not a valid position for that piece, try again')
     
     def over(self, winner):
         self.is_done = True
