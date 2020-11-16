@@ -495,6 +495,7 @@ class Game:
             
             if possible_moves == []:
                 print('This piece has no moves, pick another piece')
+                continue
             print('Thiese are the moves the piece you have chosen can make', possible_moves)
             
             try:
