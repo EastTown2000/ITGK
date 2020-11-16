@@ -266,7 +266,7 @@ class Knight(Piece):
                 x_possible = start_x + x
                 y_possible = start_y + y
                 if 0 < x_possible <= 8 and 0 < y_possible <= 8:
-                    possible_positions.append([x_possible, y_possible])
+                    possible_positions.append((x_possible, y_possible))
             return possible_positions
         searchable_spot = knight_search(x, y)
         
@@ -292,7 +292,7 @@ class King(Piece):
                 x_possible = start_x + x
                 y_possible = start_y + y
                 if 0 < x_possible <= 8 and 0 < y_possible <= 8:
-                    possible_positions.append([x_possible, y_possible])
+                    possible_positions.append((x_possible, y_possible))
             return possible_positions
         searchable_spot = king_search(x, y)
         
@@ -451,17 +451,17 @@ class Game:
             return 'Black'
         
     def player_move(self, player_to_move):
-        if player_is_white:
-            print('White to move')
-        else:
-            print('Black to move')
-        
         if board_instance.is_in_check(player_is_white):
             is_in_check = True
         else:
             is_in_check = False
         
         while True:
+            if player_is_white:
+                print('White to move')
+            else:
+                print('Black to move')
+            
             board_instance.draw()
             print('To give up, or admit loss write "L", to ask for remis write "R"')
             if is_in_check:
@@ -489,7 +489,7 @@ class Game:
                 print('That is not your piece, try again')
                 continue
             
-            position = (x, y)
+            position = [x, y]
             
             possible_moves = piece.possible_moves(board_instance)
             
