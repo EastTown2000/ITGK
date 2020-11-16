@@ -345,7 +345,7 @@ class Board:
               ' └───┴───┴───┴───┴───┴───┴───┴───┘\n'
               '   1   2   3   4   5   6   7   8\n')
     
-    def promotion(self, pawn, y_end):
+    def promote(self, pawn, y_end):
         """Takes in a pawn object and y after move, asks user what to promote to and
         makes promoted piece where pawn stands"""
         if pawn.is_white:
@@ -378,12 +378,8 @@ class Board:
         piece = self.get_piece_at(*start)
         opposing_piece = self.get_piece_at(*end)
         
-        if piece == None:
-            raise ValueError #You are trying to move a piece that does not exist
-        elif piece.is_white == opposing_piece.is_white:
-            raise EOFError #You are trying to take your own piece
-        elif piece.is_white != players_turn:
-            raise IndexError #You are trying to accses the other players piece
+        if piece.is_white == opposing_piece.is_white:
+            raise Exception #You are trying to take your own piece
         #TODO Husk try exept for function
         
         if opposing_piece != None:
@@ -392,7 +388,7 @@ class Board:
             opposing_piece.y = None
         
         if str(piece) == 'Pawn':
-            self.promotion(piece, end[1])
+            self.promote(piece, end[1])
             piece = self.get_piece_at(*start)
         
         piece.x = end[0]
@@ -429,7 +425,7 @@ class Board:
     def is_in_check(self, player_to_check_is_white):
         """Checks if any of the opposite piece can take the king"""
         pieces = self.get_piece_where(lambda piece: piece != None and piece.is_white != player_to_check_is_white)
-        king = self.get_piece_where(lambda piece: piece != None and piece.is_white == player_to_check_is_white and str(piece) == 'King')
+        king = self.get_piece_where(lambda piece: piece != None and piece.is_white == player_to_check_is_white and str(piece) == 'King')[0]
         opposite_possible_positions = [piece.possible_moves(self) for piece in pieces]
         # Would use self.legal_moves(piece) instead of piece.possible_moves(self) if it was ready
         return (king.x, king.y) in opposite_possible_positions
@@ -446,18 +442,62 @@ class Board:
 class Game:    
     def __init__(self):
         self.is_done = False
-        self.winner = None    
-    def player_move(self, player_to_move):
+        self.winner = None
         
-    def over(self, player_to_move, score):
+    def players_color(self, player_is_white):
+        if player_is_white:
+            return 'White'
+        else:
+            return 'Black'
+        
+    def player_move(self, player_to_move):
+        if player_is_white:
+            print('White to move')
+        else:
+            print('Black to move')
+        
+        board_instance.draw()
+        
+        # if board_instance.is_in_check(player_is_white):
+        #     print('YOU ARE IN CHECK')
+        print('To give up, or admit loss write "L", to ask for remis write "R"')
+        
+        while True:
+            start = input('Give x coordinate of piece you want to move: ')
+            if start == 'L':
+                self.over(self.players_color(player_is_white))
+                return ''
+            elif start == 'R':
+                self.over('Both players')
+                return ''
+            
+            try:
+                x = int(start)
+                y = int(input('Give y coordinate of piece you want to move: '))
+                piece = board_instance.get_piece_at(x, y)
+            except Exception:
+                print('That is not a correct input, try again')
+            
+            if piece.is_white != player_is_white:
+                print('That is not your piece, try again')
+                continue
+            elif piece == None:
+                print('That is not a piece, try again')
+                continue
+            
+            possible_moves = piece.possible_moves(board_instance)
+            print('Thiese are the moves the piece you have chosen can make', possible_moves)
+    
+    def over(self, winner):
         self.is_done = True
+        self.winner = winner
 
 if __name__ == "__main__":
     board_instance = Board()
     game_inatance = Game()
-    players_turn = True
-    #True is white False is black for players_turn
+    player_is_white = True
+    #True is white False is black for player_is_white
     while game_inatance.is_done == False:
-        game_inatance.player_move(players_turn)
-        players_turn = not players_turn
-    print(f'{game_inatance.winner} is the Winner')
+        game_inatance.player_move(player_is_white)
+        player_is_white = not player_is_white
+    print(f'{game_inatance.winner} won')
