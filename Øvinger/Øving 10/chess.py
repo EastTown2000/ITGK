@@ -63,10 +63,10 @@ class Rook(Piece):
     x = self.x
     y = self.y
     
-    def search_staight(i, maintained_side):
+    def search_straight(i, maintained_side):
       """uses y and x from piece and searches in a spot, determined by i and maintained_side,
-      it gives back a true or false, depent on if the search has hit a piece. 
-      It also apends moves to possible_moves if the spot is empty or has an enemy piece"""
+      it gives back a true or false, dependent on if the search has hit a piece. 
+      It also appends moves to possible_moves if the spot is empty or has an enemy piece"""
       if maintained_side == 'y':
         search = i, y
       elif maintained_side == 'x':
@@ -83,16 +83,16 @@ class Rook(Piece):
         return True
     
     for i in reversed(range(1, x)):
-      if search_staight(i, 'y'):
+      if search_straight(i, 'y'):
         break    
     for i in range(x + 1, 9 - x):
-      if search_staight(i, 'y'):
+      if search_straight(i, 'y'):
         break    
     for i in reversed(range(1, y)):
-      if search_staight(i, 'x'):
+      if search_straight(i, 'x'):
         break
     for i in range(y + 1, 9):
-      if search_staight(i, 'x'):
+      if search_straight(i, 'x'):
         break
     return possible_moves
 
@@ -105,27 +105,27 @@ class Bishop(Piece):
     y = self.y
     
     def distance_to_edge(dir_x, dir_y):
-      """Uses x an y from earlier and checks distanse to edge in x and y directon(based on witch way you are looking)
-      it gives back smalles distance"""
+      """Uses x an y from earlier and checks distance to edge in x and y direction(based on witch way you are looking)
+      it gives back smallest distance"""
       if dir_x == '+':
-        disance_to_edge_x = 9 - x
+        distance_to_edge_x = 9 - x
       elif dir_x == '-':
-        disance_to_edge_x = x
+        distance_to_edge_x = x
       
       if dir_y == '+':
-        disance_to_edge_y = 9 - y      
+        distance_to_edge_y = 9 - y      
       elif dir_y == '-':
-        disance_to_edge_y = y
+        distance_to_edge_y = y
       
-      if disance_to_edge_x > disance_to_edge_y:
-        return disance_to_edge_y
+      if distance_to_edge_x > distance_to_edge_y:
+        return distance_to_edge_y
       
-      elif disance_to_edge_x <= disance_to_edge_y:
-        return disance_to_edge_x
+      elif distance_to_edge_x <= distance_to_edge_y:
+        return distance_to_edge_x
       
     def search(i, dir_x, dir_y):
-      """Uses x and y from earlier, takes in modefyer (i) and dirction for x and y, 
-      and gives out a tupel of modifyed x and y"""
+      """Uses x and y from earlier, takes in modifier (i) and direction for x and y, 
+      and gives out a tuple of modified x and y"""
       if dir_x == '+':
         new_x = x + i
       elif dir_x == '-':
@@ -166,27 +166,27 @@ class Queen(Piece):
     y = self.y
     
     def distance_to_edge(dir_x, dir_y):
-      """Uses x an y from earlier and checks distanse to edge in x and y directon(based on witch way you are looking)
-      it gives back smalles distance"""
+      """Uses x an y from earlier and checks distance to edge in x and y direction(based on witch way you are looking)
+      it gives back smallest distance"""
       if dir_x == '+':
-        disance_to_edge_x = 9 - x
+        distance_to_edge_x = 9 - x
       elif dir_x == '-':
-        disance_to_edge_x = x
+        distance_to_edge_x = x
       
       if dir_y == '+':
-        disance_to_edge_y = 9 - y      
+        distance_to_edge_y = 9 - y      
       elif dir_y == '-':
-        disance_to_edge_y = y
+        distance_to_edge_y = y
       
-      if disance_to_edge_x > disance_to_edge_y:
-        return disance_to_edge_y
+      if distance_to_edge_x > distance_to_edge_y:
+        return distance_to_edge_y
       
-      elif disance_to_edge_x <= disance_to_edge_y:
-        return disance_to_edge_x
+      elif distance_to_edge_x <= distance_to_edge_y:
+        return distance_to_edge_x
       
     def search(i, dir_x, dir_y):
-      """Uses x and y from earlier, takes in modefyer (i) and dirction for x and y, 
-      and gives out a tupel of modifyed x and y"""
+      """Uses x and y from earlier, takes in modifier (i) and direction for x and y, 
+      and gives out a tuple of modified x and y"""
       if dir_x == '+':
         new_x = x + i
       elif dir_x == '-':
@@ -217,10 +217,10 @@ class Queen(Piece):
     diagonal_search('-', '+')
     diagonal_search('-', '-')
     
-    def search_staight(i, maintained_side):
+    def search_straight(i, maintained_side):
       """uses y and x from piece and searches in a spot, determined by i and maintained_side,
-      it gives back a true or false, depent on if the search has hit a piece. 
-      It also apends moves to possible_moves if the spot is empty or has an enemy piece"""
+      it gives back a true or false, dependent on if the search has hit a piece. 
+      It also appends moves to possible_moves if the spot is empty or has an enemy piece"""
       if maintained_side == 'y':
         search = i, y
       elif maintained_side == 'x':
@@ -237,16 +237,16 @@ class Queen(Piece):
         return True
     
     for i in reversed(range(1, x)):
-      if search_staight(i, 'y'):
+      if search_straight(i, 'y'):
         break    
     for i in range(x + 1, 9):
-      if search_staight(i, 'y'):
+      if search_straight(i, 'y'):
         break    
     for i in reversed(range(1, y)):
-      if search_staight(i, 'x'):
+      if search_straight(i, 'x'):
         break
     for i in range(y + 1, 9):
-      if search_staight(i, 'x'):
+      if search_straight(i, 'x'):
         break
     return possible_moves
 
@@ -259,7 +259,7 @@ class Knight(Piece):
     y = self.y
     
     def knight_search(start_x, start_y):
-      """Takes in start position and gives out positions for kniht that is on the board"""
+      """Takes in start position and gives out positions for knight that is on the board"""
       move_types = [(-2, -1), (-2, +1), (+2, -1), (+2, +1), (-1, -2), (-1, +2), (+1, -2), (+1, +2)]
       possible_positions = []
       for (x, y) in move_types:
@@ -396,7 +396,7 @@ class Board:
     self.board[end[1]-1][end[0]-1] = piece
   
   def get_piece_where(self, condition):
-    """Returns list of piece-objets where condition apply"""
+    """Returns list of piece-objects where condition apply"""
     result = []
     for row in self.board:
       for piece in row:
@@ -412,7 +412,7 @@ class Board:
     # """Check all possible moves, and return list of legal moves""" 
     #   lst = piece.possible_moves
     #   start = (piece.x, piece.y)  
-    # would include a sumulation where it is checed if any of the moves in possible moves
+    # would include a simulation where it is checked if any of the moves in possible moves
     # leads to own king in check
     
     # def has_legal_moves(self, player_to_check_is_white):
@@ -436,7 +436,7 @@ class Board:
     #   return has_legal_moves and not is_in_check
     
     # def checkmate_mate(self, player_to_check_is_white):
-    #   """Returns if it is checkemate"""
+    #   """Returns if it is checkmate"""
     #   return has_legal_moves and is_in_check
 
 class Game:  
@@ -463,7 +463,7 @@ class Game:
         print('Black to move')
       
       board_instance.draw()
-      print('To give up, or admit loss write "L", to ask for remis write "R"')
+      print('To give up, or admit loss write "L", to ask for remiss write "R"')
       if is_in_check:
         print('YOU ARE IN CHECK')
       
@@ -497,7 +497,7 @@ class Game:
       if possible_moves == []:
         print('This piece has no moves, pick another piece')
         continue
-      print('Thiese are the moves the piece you have chosen can make', possible_moves)
+      print('These are the moves the piece you have chosen can make', possible_moves)
       
       try:
         x_new = int(input('Give x-cordinate you wan to move to: '))
@@ -520,10 +520,10 @@ class Game:
 
 if __name__ == "__main__":
   board_instance = Board()
-  game_inatance = Game()
+  game_instance = Game()
   player_is_white = True
   #True is white False is black for player_is_white
-  while game_inatance.is_done == False:
-    game_inatance.player_move(player_is_white)
+  while game_instance.is_done == False:
+    game_instance.player_move(player_is_white)
     player_is_white = not player_is_white
-  print(f'{game_inatance.winner} won')
+  print(f'{game_instance.winner} won')
